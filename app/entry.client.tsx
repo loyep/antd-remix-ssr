@@ -31,23 +31,17 @@ async function hydrate() {
       startTransition(() => {
         hydrateRoot(
           document,
-          <>
-            <I18nextProvider i18n={i18next} defaultNS={i18nOptions.defaultNS}>
-              <StyleProvider transformers={[legacyLogicalPropertiesTransformer]}>
-                <RemixBrowser />
-              </StyleProvider>
-            </I18nextProvider>
-          </>,
+          <I18nextProvider i18n={i18next} defaultNS={i18nOptions.defaultNS}>
+            <StyleProvider transformers={[legacyLogicalPropertiesTransformer]}>
+              <RemixBrowser />
+            </StyleProvider>
+          </I18nextProvider>,
         )
       })
     },
     detection: [
       {
         detect: 'htmlTag',
-      },
-      {
-        detect: 'path',
-        lookup: 0,
       },
     ],
   })
@@ -56,6 +50,7 @@ async function hydrate() {
     await asyncLoadResource(lng || i18next.language, {
       namespaces: [...resolveNamespace()],
     })
+    console.log(lng, ...args)
     return i18nChangeLanguage(lng, ...args)
   }
 

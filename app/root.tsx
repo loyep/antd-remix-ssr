@@ -6,8 +6,6 @@ import { useChangeLanguage } from 'remix-i18next/react'
 import { Theme, ThemeProvider, useTheme } from 'remix-themes'
 import { AuthenticityTokenProvider } from 'remix-utils/csrf/react'
 import { ExternalScripts } from 'remix-utils/external-scripts'
-import { resources } from 'virtual:i18n-ally-async-resource'
-import { manifest } from 'virtual:public-typescript-manifest'
 import AntdConfigProvider from './components/antd-config-provider'
 import { ErrorBoundaryComponent } from './components/error-boundary'
 import globalCss from './css/global.css?url'
@@ -45,26 +43,12 @@ export const links: LinksFunction = () => {
   ]
 }
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const { getTheme } = await themeSessionResolver(request)
 
-  const locale = Object.keys(resources)
-    .filter((key) => !key.includes('/'))
-    .includes(params.lang!)
-    ? params.lang!
-    : await i18nServer.getLocale(request)
+  const locale = await i18nServer.getLocale(request)
 
-  if (!params.lang) {
-    let pathWithSearch = ''
-
-    const url = new URL(request.url)
-    if (url.pathname === '/') {
-      pathWithSearch = `/${locale}${url.search}`
-    } else {
-      pathWithSearch = `/${locale}${url.pathname}${url.search}`
-    }
-    throw redirect(pathWithSearch)
-  }
+  console.log('locale', locale)
   const [csrfToken, csrfCookieHeader] = await csrf.commitToken()
 
   return json(
@@ -101,9 +85,6 @@ function Document({
         {/* https://github.com/remix-run/remix/issues/9242 */}
         <Meta />
         <Links />
-
-        {<script src={manifest.flexible} />}
-
         {!isBrowser && !isDev() && '__ANTD_STYLE__'}
       </head>
       <body>

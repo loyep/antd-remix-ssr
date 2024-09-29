@@ -12,12 +12,18 @@ export const i18nOptions = {
 }
 
 export function resolveNamespace(pathname = window.location.pathname): string[] {
-  return (
-    matchRoutes(routes as AgnosticRouteObject[], pathname)
-      ?.map((route) => route.route.handle)
-      .filter((t) => t?.i18n)
-      .map((t) => t.i18n)
-      .flat()
-      .concat(defaultNS) || defaultNS
-  )
+  let r: any[] | null = matchRoutes(routes as AgnosticRouteObject[], pathname)
+  if (!r) return defaultNS
+  console.log(r)
+  r = r.map((route) => route.route.handle)
+  console.log(r)
+  r = r.filter((t) => t?.i18n)
+  console.log(r)
+  r = r.map((t) => t.i18n)
+  console.log(r)
+  r = r.flat()
+  console.log(r)
+  r = r.concat(defaultNS)
+  console.log(r)
+  return r
 }

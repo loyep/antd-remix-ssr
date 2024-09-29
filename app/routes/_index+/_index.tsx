@@ -2,10 +2,10 @@ import { useTranslation } from 'react-i18next'
 import { json, type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
 import { Button, Card, Space, Tag } from 'antd'
 import { Theme, useTheme } from 'remix-themes'
-import LocaleLink from '@/components/locale-link'
 import { useSteps } from '@/hooks/use-steps'
 import { i18nServer } from '@/i18n/i18n.server'
 import { tdk } from '@/utils/tdk'
+import { Link } from '@remix-run/react'
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const t = await i18nServer.getFixedT(request)
@@ -50,7 +50,7 @@ export default function () {
         </Card>
         <Card title={t('home.route')}>
           <Space direction='vertical'>
-            <LocaleLink to={'/user/login'}>跳转到登录页面</LocaleLink>
+            <Link to={'/user/login'}>跳转到登录页面</Link>
           </Space>
         </Card>
       </div>
