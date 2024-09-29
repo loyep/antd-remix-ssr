@@ -1,14 +1,16 @@
-import { type Cookie, createCookie } from '@remix-run/node'
+import { type Cookie } from '@remix-run/node'
 import { RemixI18Next } from 'remix-i18next/server'
 import { resources } from 'virtual:i18n-ally-resource'
 import { i18nOptions } from '@/i18n/i18n'
 import { LOCALE_COOKIE_NAME } from '@/utils/constants/storage'
+import { createCookie } from '@/utils/cookie'
 
 export const localeCookie = createCookie(LOCALE_COOKIE_NAME, {
   path: '/',
   sameSite: 'lax',
   secure: false,
   httpOnly: true,
+  maxAge: 60 * 60 * 24 * 30,
 })
 
 export function createLocaleCookieResolver(localeCookie: Cookie) {
